@@ -96,19 +96,8 @@
           csv += '\n' + r.join(',') + ',,';
         }
       });
-
-      const subject_id = jsPsych.randomization.randomID(10);
-      const filename = `${subject_id}.csv`;      
-  
-      const save_data = {
-        type: jsPsychPipe,
-        action: "save",
-        experiment_id: "nX0ylBPTMR8A",
-        filename: filename,
-        data_string: ()=>jsPsych.data.get().csv()
-      };
       
-      // BOMをつける
+      /* BOMをつける
       const BOM = '\uFEFF'
       const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -119,8 +108,19 @@
       a.download = `data_${timestamp}.csv`;
       a.click();
       URL.revokeObjectURL(url);
-    }
+    }*/
   });
+
+  const subject_id = jsPsych.randomization.randomID(10);
+  const filename = `${subject_id}.csv`;      
+  
+  const save_data = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "nX0ylBPTMR8A",
+    filename: filename,
+    data_string: ()=>jsPsych.data.get().csv()
+  };
 
   const intro = {
     type: jsPsychHtmlButtonResponse,
