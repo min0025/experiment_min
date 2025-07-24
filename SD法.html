@@ -205,13 +205,23 @@
   let custom_csv = ""; // 仮csv格納変数
 
   const custom_save = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: `
-    <h2>結果を保存します</h2>
-    <p>「保存する」ボタンを押してください。</p>
-  `,
-  choices: ["保存する"],
-  on_finish: function() {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: "保存準備OK → ボタン押して保存するよ",
+    choices: ["保存"],
+    on_finish: function() {
+      custom_csv = "stim,value\nA,1\nB,2"; // 実際は自分のCSV生成ロジック
+      console.log("custom_csv:", custom_csv);
+    }
+  };
+
+ /* const custom_save = {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: `
+      <h2>結果を保存します</h2>
+      <p>「保存する」ボタンを押してください。</p>
+    `,
+    choices: ["保存する"],
+    on_finish: function() {
 
     // === あなたのCSV生成ロジックそのまま ===
     const sd7_trials = jsPsych.data.get().filter({ trial_type: 'survey-likert', block: 'SD7' });
@@ -257,7 +267,7 @@
     custom_csv = csv;
 
   }
-};
+};*/
 
   const thanks = {
     type: jsPsychHtmlButtonResponse,
