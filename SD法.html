@@ -114,14 +114,6 @@
 
   const subject_id = jsPsych.randomization.randomID(10);
   const filename = `${subject_id}.csv`;      
-  
-  const save_data = {
-    type: jsPsychPipe,
-    action: "save",
-    experiment_id: "nX0ylBPTMR8A",
-    filename: filename,
-    data_string: ()=>jsPsych.data.get().csv()
-  };
 
   const intro = {
     type: jsPsychHtmlButtonResponse,
@@ -213,11 +205,20 @@
   const thanks = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-      <h2>ご協力ありがとうございました。</h2>
-      <p>下のボタンを押して。</p>`,
+      <h2>お疲れ様でした。</h2>
+      <p>ご協力ありがとうございました！
+      <p>下のボタンを押してからタブを閉じて終了してください。</p>`,
     choices: ["終了する"]
   };
 
-  jsPsych.run([intro, ...trials_7, intermission, ...trials_bio, demographics, thanks]);
+  const save_data = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "nX0ylBPTMR8A",
+    filename: filename,
+    data_string: ()=>jsPsych.data.get().csv()
+  };
+
+  jsPsych.run([intro, ...trials_7, intermission, ...trials_bio, demographics, thanks, save_data]);
 </script>
 </html>
