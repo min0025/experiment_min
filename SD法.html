@@ -51,6 +51,8 @@
 <body></body>
 
 <script>
+  csvFile = "";
+  
   const jsPsych = initJsPsych({
     on_finish: function() {
       // SD法 7段階の回答
@@ -109,6 +111,7 @@
       a.click();
       URL.revokeObjectURL(url);
     */
+     csvFile = csv;  
     }
   });
 
@@ -216,7 +219,7 @@
     action: "save",
     experiment_id: "nX0ylBPTMR8A",
     filename: filename,
-    data_string: ()=>custom_csv
+    data_string: ()=> csvFile.csv()
   };
 
   jsPsych.run([intro, ...trials_7, intermission, ...trials_bio, demographics, thanks, save_data]);
