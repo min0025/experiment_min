@@ -51,17 +51,6 @@
 <body></body>
 
 <script>
-  const subject_id = jsPsych.randomization.randomID(10);
-  const filename = `${subject_id}.csv`;      
-  
-  const save_data = {
-    type: jsPsychPipe,
-    action: "save",
-    experiment_id: "nX0ylBPTMR8A",
-    filename: filename,
-    data_string: ()=>jsPsych.data.get().csv()
-  };
-  
   const jsPsych = initJsPsych({
     on_finish: function() {
       // SD法 7段階の回答
@@ -107,6 +96,17 @@
           csv += '\n' + r.join(',') + ',,';
         }
       });
+
+      const subject_id = jsPsych.randomization.randomID(10);
+      const filename = `${subject_id}.csv`;      
+  
+      const save_data = {
+        type: jsPsychPipe,
+        action: "save",
+        experiment_id: "nX0ylBPTMR8A",
+        filename: filename,
+        data_string: ()=>jsPsych.data.get().csv()
+      };
       
       // BOMをつける
       const BOM = '\uFEFF'
