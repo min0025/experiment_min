@@ -205,15 +205,16 @@
   let custom_csv = ""; // 仮csv格納変数
 
   const custom_save = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: "保存テスト",
-    choices: ["保存する"],
-    on_finish: function() {
-      console.log("custom_csv:", custom_csv);
-      console.log("subject_id:", subject_id);
-      console.log("filename:", filename);
-    }
-  };
+  type: jsPsychHtmlButtonResponse,
+  stimulus: "保存準備ができました。保存ボタンを押してください。",
+  choices: ["保存準備OK"],
+  on_finish: function() {
+    custom_csv = "stim,value\nA,1\nB,2"; // ✅ 必ずここで代入
+    console.log("custom_csv:", custom_csv);
+    console.log("subject_id:", subject_id);
+    console.log("filename:", filename);
+  }
+};
 
  /* const custom_save = {
     type: jsPsychHtmlButtonResponse,
