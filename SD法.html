@@ -202,82 +202,12 @@
     button_label: "終了"
   };
 
-  let custom_csv = ""; // 仮csv格納変数
-
-  const custom_save = {
-  type: jsPsychHtmlButtonResponse,
-  stimulus: "保存準備ができました。保存ボタンを押してください。",
-  choices: ["保存準備OK"],
-  on_finish: function() {
-    custom_csv = "stim,value\nA,1\nB,2"; // ✅ 必ずここで代入
-    console.log("custom_csv:", custom_csv);
-    console.log("subject_id:", subject_id);
-    console.log("filename:", filename);
-  }
-};
-
- /* const custom_save = {
-    type: jsPsychHtmlButtonResponse,
-    stimulus: `
-      <h2>結果を保存します</h2>
-      <p>「保存する」ボタンを押してください。</p>
-    `,
-    choices: ["保存する"],
-    on_finish: function() {
-
-    // === あなたのCSV生成ロジックそのまま ===
-    const sd7_trials = jsPsych.data.get().filter({ trial_type: 'survey-likert', block: 'SD7' });
-    const bio_trials = jsPsych.data.get().filter({ trial_type: 'survey-likert', block: 'BIO' });
-    const rows = [];
-
-    sd7_trials.values().forEach(trial => {
-      const stim = trial.stim || '';
-      const res = trial.response;
-      const row = [stim];
-      adjectives.forEach((pair, idx) => {
-        const index = res[`Q${idx}`];
-        const val = likert_scale[index];
-        row.push(val);
-      });
-
-      const bio_trial = bio_trials.values().find(t => t.stim === stim);
-      if (bio_trial) {
-        const bio_index = bio_trial.response['Q0'];
-        const bio_val = likert_bio[bio_index];
-        row.push(bio_val);
-      } else {
-        row.push('');
-      }
-
-      rows.push(row);
-    });
-
-    const demo = jsPsych.data.get().filter({ trial_type: 'survey-html-form' }).values()[0];
-    const gender = demo?.response?.gender || '';
-    const age = demo?.response?.age || '';
-
-    let csv = ['刺激,' + adjectives.map(pair => `${pair.left}-${pair.right}`).join(',') + ',人物像,性別,年齢'].join('\n');
-    rows.forEach((r, idx) => {
-      if (idx === 0) {
-        csv += '\n' + r.join(',') + `,${gender},${age}`;
-      } else {
-        csv += '\n' + r.join(',') + ',,';
-      }
-    });
-
-    // ここでグローバルに代入
-    custom_csv = csv;
-
-  }
-};*/
-
   const thanks = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <h2>お疲れ様でした。</h2>
       <p>ご協力ありがとうございました！</p>
-      <p>下のボタンを押してからタブを閉じて終了してください。</p>
-      <p>デバッグ用</p>`,
+      <p>下のボタンを押してからタブを閉じて終了してください。</p>`,
     choices: ["終了する"]
   };
 
