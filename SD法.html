@@ -206,11 +206,12 @@
 
   const custom_save = {
     type: jsPsychHtmlButtonResponse,
-    stimulus: "保存準備OK → ボタン押して保存するよ",
-    choices: ["保存"],
+    stimulus: "保存テスト",
+    choices: ["保存する"],
     on_finish: function() {
-      custom_csv = "stim,value\nA,1\nB,2"; // 実際は自分のCSV生成ロジック
       console.log("custom_csv:", custom_csv);
+      console.log("subject_id:", subject_id);
+      console.log("filename:", filename);
     }
   };
 
