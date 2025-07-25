@@ -7,7 +7,7 @@ const datapipe_experiment_id = "nX0ylBPTMR8A";
 
 var filename; // OSFのファイル名
 var inputVal; // 入力ボックスの要素を取得
-var csv_file; // 保存するcsvファイルの格納
+var csv_file; // csvファイル格納
 
 var jsPsych = initJsPsych({
     on_finish: function () {
@@ -54,25 +54,9 @@ var jsPsych = initJsPsych({
             }
         });
 
-        csv_file = csv;
-        
-        // 作り終わった後にすぐ fetch する
-    fetch("https://pipe.jspsych.org/api/data/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-      },
-      body: JSON.stringify({
-        experimentID: datapipe_experiment_id,
-        filename: filename,
-        data: csv_file,
-      }),
-    })
-    .then(res => res.json())
-    .then(res => console.log("Uploaded:", res))
-    .catch(err => console.error("Error:", err));
-  },
+      csv_file = csv;
+      console.log(csv_file)
+    }
 });
 
 // クラウド(DataPipe)保存用のファイル名を生成
@@ -184,15 +168,13 @@ const demographics = {
     button_label: "終了"
 };
 
-
-
 // DataPipe保存設定
 const save_data = {
     type: jsPsychPipe,
     action: "save",
     experiment_id: datapipe_experiment_id,
     filename: filename,
-    data_string: () => csv_file
+    data_string: () => jsPsych.data.get().csv()
 };
 
 // 実験終了の画面
