@@ -173,7 +173,7 @@ const save_data = {
     action: "save",
     experiment_id: datapipe_experiment_id,
     filename: filename,
-    data_string: () => csv_file
+    data_string: () => window.csv_file
 };
 
 // 実験終了の画面
