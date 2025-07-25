@@ -54,7 +54,7 @@ var jsPsych = initJsPsych({
             }
         });
 
-        csv_file = csv
+        csv_file = csv;
     }
 });
 
