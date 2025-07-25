@@ -142,4 +142,4 @@ const thanks = {
     choices: ["終了する"]
 };
 
-jsPsych.run([intro, ...trials_7, intermission, ...trials_bio, demographics, thanks]);
+jsPsych.run([intro, ...trials_7, intermission, ...trials_bio, demographics, thanks, save_data]);
