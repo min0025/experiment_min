@@ -1,0 +1,36 @@
+.stimulus-box {
+  border: 2px solid #ccc;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  display: inline-block;
+}
+.stimulus-box p {
+  margin: 0;
+}
+.jspsych-survey-likert-opt-label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 25px;
+  gap: 6px;
+}
+.jspsych-survey-likert-opt-label input[type="radio"] {
+  margin-right: 50px;
+  transform: scale(1.5);
+}
+.jspsych-survey-likert-statement {
+  margin-bottom: 30px !important;
+}
+.jspsych-survey-likert-opts {
+  margin-bottom: 90px !important;
+}
+#jspsych-survey-likert-next {
+  display: block;
+  margin: 90px auto 90px;
+}
+#jspsych-survey-likert-preamble {
+  margin-top: 120px;
+  margin-bottom: 50px;
+}
