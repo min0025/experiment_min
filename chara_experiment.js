@@ -7,11 +7,54 @@ const datapipe_experiment_id = "nX0ylBPTMR8A";
 
 var filename; // OSFのファイル名
 var inputVal; // 入力ボックスの要素を取得
+var csv_file; // 保存するcsvファイルの格納
 
 var jsPsych = initJsPsych({
-    on_finish: function() {
-        jsPsych.data.get().localSave('csv', filename);
-        // jsPsych.data.displayData();
+    on_finish: function () {
+        // SD法 7段階の回答
+        const sd7_trials = jsPsych.data.get().filter({ trial_type: 'survey-likert', block: 'SD7' }); // リッカート尺度で評価したデータにフィルタリング
+        // 質問 人物像のやつ
+        const bio_trials = jsPsych.data.get().filter({ trial_type: 'survey-likert', block: 'BIO' });
+        // 刺激ごとの行
+        const rows = []; // 数値の格納のための配列
+
+        sd7_trials.values().forEach(trial => {
+            const stim = trial.stim || '';  // data から安全に刺激を取る
+            const res = trial.response; // データとしてリッカート尺度で入力した数値
+            const row = [stim]; // 刺激の配列
+            adjectives.forEach((pair, idx) => {
+                const index = res[`Q${idx}`]; // リッカート尺度の入力場所indexをとる
+                const val = likert_scale[index]; // 評価項目の値を得る
+                row.push(val); // 評価値を刺激ごとに格納
+            });
+
+            // 追加: 同じ刺激に対応する9段階の結果を取得
+            const bio_trial = bio_trials.values().find(t => t.stim === stim);
+            if (bio_trial) {
+                const bio_index = bio_trial.response['Q0']; // 9段階は1問だからQ0
+                const bio_val = likert_bio[bio_index];
+                row.push(bio_val);
+            } else {
+                row.push('');
+            }
+
+            rows.push(row);
+        });
+
+        const demo = jsPsych.data.get().filter({ trial_type: 'survey-html-form' }).values()[0];
+        const gender = demo?.response?.gender || '';
+        const age = demo?.response?.age || '';
+
+        let csv = ['刺激,' + adjectives.map(pair => `${pair.left}-${pair.right}`).join(',') + ',人物像,性別,年齢'].join('\n');
+        rows.forEach((r, idx) => {
+            if (idx === 0) {
+                csv += '\n' + r.join(',') + `,${gender},${age}`;
+            } else {
+                csv += '\n' + r.join(',') + ',,';
+            }
+        });
+
+        csv_file = csv
     }
 });
 
@@ -20,15 +63,15 @@ function createfilename(argseed) {
     // 日付時間秒を文字列で返す
     const dt = new Date();
     var yyyy = dt.getFullYear();
-    var mm = ('00' + (dt.getMonth()+1)).slice(-2);
+    var mm = ('00' + (dt.getMonth() + 1)).slice(-2);
     var dd = ('00' + dt.getDate()).slice(-2);
     var hh = ('00' + dt.getHours()).slice(-2);
     var mi = ('00' + dt.getMinutes()).slice(-2);
     var se = ('00' + dt.getSeconds()).slice(-2);
-    var answer = yyyy + mm + dd + "-" + hh + mi + se ;
+    var answer = yyyy + mm + dd + "-" + hh + mi + se;
     const subject_id = jsPsych.randomization.randomID(10);
-    answer = argseed + answer + "-" + subject_id + ".csv" ;
-    return(answer);
+    answer = argseed + answer + "-" + subject_id + ".csv";
+    return (answer);
 };
 filename = createfilename(expname);
 
@@ -126,11 +169,11 @@ const demographics = {
 
 // DataPipe保存設定
 const save_data = {
-  type: jsPsychPipe,
-  action: "save",
-  experiment_id: datapipe_experiment_id, 
-  filename: filename,
-  data_string: ()=>jsPsych.data.get().csv()
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: datapipe_experiment_id,
+    filename: filename,
+    data_string: () => csv_file
 };
 
 // 実験終了の画面
