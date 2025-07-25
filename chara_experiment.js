@@ -54,8 +54,25 @@ var jsPsych = initJsPsych({
             }
         });
 
-        window.csv_file = csv;
-    }
+        csv_file = csv;
+        
+        // 作り終わった後にすぐ fetch する
+    fetch("https://pipe.jspsych.org/api/data/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+      },
+      body: JSON.stringify({
+        experimentID: datapipe_experiment_id,
+        filename: filename,
+        data: csv_file,
+      }),
+    })
+    .then(res => res.json())
+    .then(res => console.log("Uploaded:", res))
+    .catch(err => console.error("Error:", err));
+  },
 });
 
 // クラウド(DataPipe)保存用のファイル名を生成
@@ -167,13 +184,15 @@ const demographics = {
     button_label: "終了"
 };
 
+
+
 // DataPipe保存設定
 const save_data = {
     type: jsPsychPipe,
     action: "save",
     experiment_id: datapipe_experiment_id,
     filename: filename,
-    data_string: window.csv_file
+    data_string: () => csv_file
 };
 
 // 実験終了の画面
@@ -185,4 +204,4 @@ const thanks = {
     choices: ["終了する"]
 };
 
-jsPsych.run([intro, ...trials_7, intermission, ...trials_bio, demographics, thanks, save_data]);
+jsPsych.run([intro, ...trials_7, intermission, ...trials_bio, demographics, thanks]);
