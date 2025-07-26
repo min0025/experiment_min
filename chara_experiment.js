@@ -31,7 +31,7 @@ filename = createfilename(expname);
 const gap = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: '',
-    trial_duration: 1000 // ← 1000ミリ秒（1秒）待機
+    trial_duration: 500 // ← 500ミリ秒
 };
 
 // 実験前置きのイントロ
@@ -78,7 +78,7 @@ const trials_7 = stimuli.map(stim => {
                  </div>`,
         questions: questions,
         data: { stim: stim, block: 'SD7' },  // ← ここで安全に刺激情報を保存
-        post_trial_gap: 1000
+        post_trial_gap: 500
     };
 });
 
