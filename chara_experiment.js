@@ -46,7 +46,7 @@ const intro = {
     choices: ['開始する']
 };
 
-const stimuli = ["ぼく"];
+const stimuli = ["ぼく", "わたし"];
 
 const adjectives = [
     { left: "男性的", right: "女性的" },
