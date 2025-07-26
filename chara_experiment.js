@@ -8,12 +8,7 @@ const datapipe_experiment_id = "nX0ylBPTMR8A";
 var filename; // OSFのファイル名
 var inputVal; // 入力ボックスの要素を取得
 
-var jsPsych = initJsPsych({
-    on_finish: function() {
-        jsPsych.data.get().localSave('csv', filename);
-        // jsPsych.data.displayData();
-    }
-});
+var jsPsych = initJsPsych({});
 
 // クラウド(DataPipe)保存用のファイル名を生成
 function createfilename(argseed) {
