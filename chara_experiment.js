@@ -51,8 +51,8 @@ const adjectives = [
     { left: "偉そうな", right: "控えめな" },
 ];
 
-const likert_scale = ["3", "2", "1", "0", "-1", "-2", "-3"];
-const likert_bio = ["成人男性", "少年", "老人", "上司", "成人女性", "少女", "おばあさん", "お嬢様", "奥様", "幼児"]
+const likert_scale = ["1", "2", "3", "4", "5", "6", "7"];
+const likert_bio = ["成人男性", "少年", "おじいさん", "上司", "成人女性", "少女", "おばあさん", "お嬢様", "奥様", "幼児"]
 
 // SD法での調査
 const trials_7 = stimuli.map(stim => {
