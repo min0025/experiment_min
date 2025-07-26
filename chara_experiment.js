@@ -70,7 +70,8 @@ const trials_7 = stimuli.map(stim => {
                    <p style="font-size: 50px;">${stim}</p>
                  </div>`,
         questions: questions,
-        data: { stim: stim, block: 'SD7' }  // ← ここで安全に刺激情報を保存
+        data: { stim: stim, block: 'SD7' },  // ← ここで安全に刺激情報を保存
+        post_trial_gap: 1000
     };
 });
 
@@ -87,7 +88,7 @@ const trials_bio = stimuli.map(stim => ({
         required: true
     }],
     data: { stim: stim, block: 'BIO' },
-    block: 'BIO'
+    post_trial_gap: 1000
 }));
 
 // 後半セクションへの休憩所
