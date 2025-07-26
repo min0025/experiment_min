@@ -27,6 +27,13 @@ function createfilename(argseed) {
 };
 filename = createfilename(expname);
 
+// イントロから問題までのインターバル
+const gap = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: '',
+    trial_duration: 1000 // ← 1000ミリ秒（1秒）待機
+};
+
 // 実験前置きのイントロ
 const intro = {
     type: jsPsychHtmlButtonResponse,
@@ -133,9 +140,9 @@ const save_data = {
 const thanks = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-      <h2>ご協力ありがとうございました。</h2>
-      <p>下のボタンを押して。</p>`,
+      <h2>ご協力ありがとうございました</h2>
+      <p>下のボタンを押してからタブを閉じて終了してください</p>`,
     choices: ["終了する"]
 };
 
-jsPsych.run([intro, ...trials_7, intermission, ...trials_bio, demographics, thanks, save_data]);
+jsPsych.run([intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, demographics, thanks, save_data]);
