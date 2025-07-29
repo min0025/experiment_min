@@ -38,16 +38,17 @@ const gap = {
 const intro = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-      <h1>主観評価実験</h1>
+      <h1>主観評価実験</h1><br>
       <p>この調査では、様々な1人称および2人称の単語を見て各設問に回答してもらいます</p>
+      <p>単語はページの先頭に表示されます</p>
       <p>前半と後半の2段階のセクションに分かれています</p>
-      <p>前半セクションでは、単語に対する設問に対して自分が感じる度合いを1から7の7段階で評価してください</p>
+      <p>前半セクションでは、単語に対する設問に対して自分が感じる度合いを1から7の7段階で評価してください</p><br>
     `,
     choices: ['開始する']
 };
 
 const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わちき", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
-
+// const stimuli = ["おれ", "わたし"]
 // 刺激をランダムに並べ替える
 const shuffled_stimuli = jsPsych.randomization.shuffle(stimuli);
 
@@ -95,9 +96,9 @@ const trials_bio = shuffled_stimuli.map(stim => ({
       {
         prompt: `<b style="font-size: 24px">表示された単語から連想する人物像を選んでください</b><br>`,
         name: 'Characteristics', 
-        options: likert_bio, 
+        options: likert_bio,
         required: true,
-        horizontal: true
+        horizontal: false
       }
     ],
     data: { stim: stim, block: 'BIO' },
@@ -108,16 +109,16 @@ const trials_bio = shuffled_stimuli.map(stim => ({
 const intermission = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
-      <h2>つづいて、後半のセクションです</h2>
+      <h2>つづいて、後半のセクションです</h2><br>
       <p>後半セクションでは、単語から連想する人物像を1つ選んで回答してください</p>
-      <p>準備ができ次第、下のボタンを押して先に進んでください</p>`,
+      <p>準備ができ次第、下のボタンを押して先に進んでください</p><br>`,
     choices: ["進む"]
 };
 
 // 性別と年齢入力欄
 const demographics = {
     type: jsPsychSurveyHtmlForm,
-    preamble: "<h2>お疲れ様でした</h2><p>最後にご自身の以下項目にご回答をお願いします。</p>",
+    preamble: "<h2>お疲れ様でした</h2><br><p>最後にご自身の以下項目にご回答をお願いします</p>",
     html: `
       <p>
         性別:
@@ -128,7 +129,7 @@ const demographics = {
       <p>
         年齢:
         <input name="age" type="number" min="0" max="120" required>
-      </p>
+      </p><br></br>
     `,
     button_label: "終了"
 };
