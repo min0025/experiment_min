@@ -1,3 +1,4 @@
+/* 刺激提示に関する設定 */
 .stimulus-box {
   border: 2px solid #ccc;
   padding: 20px;
@@ -9,22 +10,44 @@
 .stimulus-box p {
   margin: 0;
 }
+
+/* SD法の形容詞対の位置設定 */
+.MakeTable { 
+  display: table; 
+  width: 100%; 
+}
+.LeftShift { 
+  display: table-cell; 
+  text-align: left; 
+}
+.Centering { 
+  display: table-cell; 
+  text-align: center; 
+}
+.RightShift { 
+  display: table-cell; 
+  text-align: right; 
+}
+
+/* 質問項目との間隔あけ */
 .jspsych-survey-likert-opt-label {
-  display: inline-flex;
+  display: block;
+  text-align: center;
+  margin-top: 4px;
   flex-direction: column;
   align-items: center;
-  font-size: 25px;
-  gap: 6px;
+  font-size: 20px;
+  gap: 10px;
 }
 .jspsych-survey-likert-opt-label input[type="radio"] {
   margin-right: 50px;
   transform: scale(1.5);
 }
 .jspsych-survey-likert-statement {
-  margin-bottom: 30px !important;
+  margin-bottom: 20px !important;
 }
 .jspsych-survey-likert-opts {
-  margin-bottom: 90px !important;
+  margin-bottom: 70px !important;
 }
 #jspsych-survey-likert-next {
   display: block;
