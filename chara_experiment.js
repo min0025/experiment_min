@@ -47,8 +47,8 @@ const intro = {
     choices: ['開始する']
 };
 
-const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わちき", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
-// const stimuli = ["おれ", "わたし"]
+// const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わちき", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
+const stimuli = ["おれ", "わたし"]
 // 刺激をランダムに並べ替える
 const shuffled_stimuli = jsPsych.randomization.shuffle(stimuli);
 
@@ -62,13 +62,25 @@ const adjectives = [
     { left: "偉そうな", right: "控えめな" },
 ];
 
-const likert_scale = ["1", "2", "3", "4", "5", "6", "7"];
+const likert_scale = [
+  "<p>とても<br>当てはまる</br></p>", 
+  "<span style='font-size: 17px;'><p>当てはまる</p></span>",
+  "<span style='font-size: 17px;'><p>少し<br>当てはまる</br></p></span>", 
+  "<p>どちらともいえない</p>", 
+  "<span style='font-size: 17px;'><p>少し<br>当てはまる</br></p></span>",
+  "<span style='font-size: 17px;'><p>当てはまる</p></span>",
+  "<p>とても<br>当てはまる</br></p>"
+];
 const likert_bio = ["成人男性", "少年", "おじいさん", "上司", "成人女性", "少女", "おばあさん", "お嬢様", "奥様", "幼児"]
 
 // SD法での調査
 const trials_7 = shuffled_stimuli.map(stim => {
     const questions = adjectives.map((pair) => ({
-        prompt: `<b style="font-size: 24px">${pair.left} - ${pair.right}</b><br>`,
+        prompt: `<div class="MakeTable">
+                   <div class="LeftShift"><b style="font-size: 26px">${pair.left}</b></div>
+                   <div class="RightShift"><b style="font-size: 26px">${pair.right}</b></div>
+                 </div>
+                 `,
         labels: likert_scale,
         required: true
     }));
@@ -95,7 +107,14 @@ const trials_bio = shuffled_stimuli.map(stim => ({
     questions: [
       {
         prompt: `<b style="font-size: 24px">表示された単語から連想する人物像を選んでください</b><br>`,
-        name: 'Characteristics', 
+        name: 'Characteristics1', 
+        options: likert_bio,
+        required: true,
+        horizontal: false
+      },
+      {
+        prompt: `<b style="font-size: 24px">最初に選んだ人物像以外で連想する人物像を選んでください</b><br>`,
+        name: 'Characteristics2', 
         options: likert_bio,
         required: true,
         horizontal: false
@@ -145,11 +164,10 @@ const save_data = {
 
 // 実験終了の画面
 const thanks = {
-    type: jsPsychHtmlButtonResponse,
+    type: jsPsychHtmlKeyboardResponse,
     stimulus: `
       <h2>ご協力ありがとうございました</h2>
-      <p>下のボタンを押してからタブを閉じて終了してください</p>`,
-    choices: ["終了する"]
+      <p>タブを閉じて終了してください</p>`
 };
 
-jsPsych.run([intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, demographics, thanks, save_data]);
+jsPsych.run([intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, demographics, save_data, thanks]);
