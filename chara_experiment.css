@@ -1,13 +1,25 @@
 /* 刺激提示に関する設定 */
-.stimulus-box {
+.stimulus-box1 {
   border: 2px solid #ccc;
   padding: 20px;
+  margin-bottom: 60px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  display: inline-block;
+}
+.stimulus-box2 {
+  border: 2px solid #ccc;
+  padding: 20px; 
+  margin-top: 100px;
   margin-bottom: 30px;
   border-radius: 8px;
   background-color: #f9f9f9;
   display: inline-block;
 }
-.stimulus-box p {
+.stimulus-box1 p {
+  margin: 0;
+}
+.stimulus-box2 p {
   margin: 0;
 }
 
@@ -57,3 +69,19 @@
   margin-top: 120px;
   margin-bottom: 50px;
 }
+
+/* 後半セクションの体裁 */
+.jspsych-survey-multi-choice-option input[type="radio"] {
+  transform: scale(1.4);   /* 大きさを1.4倍に */
+  margin-right: 8px;       /* テキストとの隙間 */
+}
+/* --- 選択肢の文字サイズ調整 --- */
+.jspsych-survey-multi-choice-option label {
+  font-size: 17px;   /* 好きなサイズに調整 */  
+}
+/* --- 「次に進む」ボタンの余白 --- */
+.jspsych-survey-multi-choice.jspsych-btn {
+  margin-top: 30px;    /* 上に余白 */
+  margin-bottom: 60px; /* 下に余白 */
+}
+
