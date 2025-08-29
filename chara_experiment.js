@@ -265,4 +265,4 @@ const thanks = {
       <p style="font-size: 20px">タブを閉じて終了してください</p>`
 };
 
-jsPsych.run([consent_form, gap, intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, gap, demographics, save_data, thanks]);br
+jsPsych.run([consent_form, gap, intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, gap, demographics, save_data, thanks]);
