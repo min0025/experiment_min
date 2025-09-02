@@ -48,11 +48,11 @@ const consent_form = {
   preamble: '<header class="header">実験内容の説明と研究へのご協力のお願い</header>' +
       '<div class="consent">' +
       '<p class="title">1. 実験の目的および内容</p>' +
-      '<p class="contents">本実験は、アニメや漫画に登場する1人称および2人称の単語から実験参加者がどんな印象を持っているのかについて調べることを目的としています。また、その単語から実験参加者がどんな人物像を想起するのかを調べることも目的としています。</p>' +
+      '<p class="contents">本実験は、一人称および二人称の単語に対して、実験参加者がどんな印象を持っているのかについて調べることを目的としています。また、その単語から実験参加者がどんな人物像を想起するのかを調べることも目的としています。</p>' +
       '<p class="title">2. 実験の方法</p>' +
       '<p class="contents">本実験はwebブラウザ上で行います。画面上に提示される単語に対して質問に回答してもらいます。前半セクションと後半セクションに別れており、実験の所要時間は20分ほどです。質問には、あまり深く考えず感じたままに回答してください。</p>' + 
       '<p class="title">3. 実験結果データの扱いについて</p>' +
-      '<p class="contents">本実験で得られたデータは統計的に処理され、研究の目的に限って使用されます。個人的なデータを個人が特定可能な形で外部に公開されることは一切ありません。</p>' +
+      '<p class="contents">本実験で得られたデータは統計的に処理され、研究の目的に限って使用されます。データを個人が特定可能な形で外部に公開することは一切ありません。</p>' +
       '<p class="title">4. 実験協力の自由および同意の撤回について</p>' +
       '<p class="contents">本実験への参加は、参加者ご自身の意思に基づくものであり、強制ではありません。実験前や実験中を問わず、ブラウザのタブを閉じることでいつでも参加を取りやめることができます。本実験に参加しないことによる不利益や同意の撤回に伴う不利益はありません。</p>' +
       '<p class="title">5. 実験に関する注意事項</p>' +
@@ -69,7 +69,7 @@ const intro = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <h1>前半セクション</h1><br>
-      <p style="font-size: 20px">ここでは、アニメや漫画の1人称および2人称の単語について各項目に回答してもらいます</p>
+      <p style="font-size: 20px">ここでは、一人称および二人称の単語について各項目に回答してもらいます</p>
       <p style="font-size: 20px">各項目の形容語に対して自分が感じる「印象の度合い」を評価してください</p>
       <p style="font-size: 20px">単語はページの先頭に表示されます</p>
     `,
@@ -130,63 +130,66 @@ const trials_7 = shuffled_stimuli.map(stim => {
 
 // キャラクタの人物像想起
 const trials_bio = shuffled_stimuli.map(stim => ({
-    type: jsPsychSurveyMultiChoice,
+    type: jsPsychSurveyMultiSelect,
     preamble: `<div class="stimulus-box2">
                  <p style="font-size: 50px;">${stim}</p>
                </div>`,
     questions: [
       {
-        prompt: `<b style="font-size: 19px">表示された単語から連想する「人物像」を選んでください</b>`,
+        prompt: `<b style="font-size: 19px">Q1. 表示された単語から<U>最も</U>当てはまる「人物像」を<U>1つ選んでください</U></b>`,
         name: 'Characteristics1', 
         options: likert_bio,
         required: true,
-        horizontal: false
+        horizontal: true
       },
       {
-        prompt: `<b style="font-size: 19px">最初以外で連想する「人物像」を選んでください</b>`,
+        prompt: `<b style="font-size: 19px">Q2. 表示された単語から当てはまる「人物像」を<U>全て選んでください</U><br>(
+        1問目で選んだものも含めて）</b>`,
         name: 'Characteristics2', 
         options: likert_bio,
         required: true,
-        horizontal: false
+        horizontal: true
       }
     ],
     data: { stim: stim, block: 'BIO' },
     on_load: () => {
       // 少し待ってからイベント登録
       setTimeout(() => {
-        const q1_radios = document.querySelectorAll('input[name="jspsych-survey-multi-choice-response-0"]');
-        const q2_radios = document.querySelectorAll('input[name="jspsych-survey-multi-choice-response-1"]');
+        const q1_boxes = document.querySelectorAll('input[name="jspsych-survey-multi-select-response-0"]');
+        const q2_boxes = document.querySelectorAll('input[name="jspsych-survey-multi-select-response-1"]');
 
         // 最初はQ2を全部無効化
-        q2_radios.forEach(r2 => r2.disabled = true);
+        q2_boxes.forEach(b => b.disabled = true);
 
-        // Q1のラジオボタンにイベントを追加
-        q1_radios.forEach(r => {
-          r.addEventListener('change', e => {
-            const chosen = e.target.value;
+        // Q1は「必ず1つだけ」選べるようにする
+        q1_boxes.forEach(box => {
+          box.addEventListener('change', e => {
+            if (e.target.checked) {
+              // 他の選択肢を外す
+              q1_boxes.forEach(b => {
+                if(b !== e.target) b.checked = false;
+              });
 
-            // 一旦Q2を全解除
-            q2_radios.forEach(r2 => r2.disabled = false);
-
-            // Q1と同じ回答をQ2から無効化
-            q2_radios.forEach(r2 => {
-              if(r2.value === chosen){
-                r2.disabled = true;
+              // Q2を有効化
+              q2_boxes.forEach(b => b.disabled = false);
+              } else{
+                const anyChecked = Array.from(q1_boxes).some(b => b.checked);
+                if(!anyChecked){
+                  q2_boxes.forEach(b => b.disabled = true);
+                }
               }
-            });
           });
         });
       }, 0);
     }
-  }
-))
+}));
 
 // 後半セクションへの休憩所
 const intermission = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <h1>つづいて、後半のセクションです</h1><br>
-      <p style="font-size: 20px">後半セクションでは、単語から連想する「人物像」を2つ選んで回答してください</p>
+      <p style="font-size: 20px">後半セクションでは、単語から連想する「人物像」を回答してください</p>
       <p style="font-size: 20px">単語はページの先頭に表示されます</p>`,
     choices: ["進む"]
 };
@@ -205,42 +208,33 @@ const demographics = {
       </p>
       <p>
         年齢: 
-        <select id="age-select" name="age" required>
-          <option value="">選択してください</option>
-          <option value="10歳未満">10歳未満</option>
-          <option value="10代">10代</option>
-          <option value="20代">20代</option>
-          <option value="30代">30代</option>
-          <option value="40代">40代</option>
-          <option value="50代">50代</option>
-          <option value="60代">60代</option>
-          <option value="70代以上">70代以上</option>
-        </select>
+        <input name="age" id="age-input" type="number" min="0" max="120" required>
       </p></br>
     `,
     button_label: "終了",
     on_load: () => {
       setTimeout(() => {
-        const form = document.querySelector('#jspsych-survey-html-form');
-        const button = document.querySelector('#jspsych-survey-html-form-next');
-        const genderInputs = form.querySelectorAll('input[name="gender"]');
-        const ageSelect = form.querySelector("#age-select");
+        const form = document.querySelector('#jspsych-survey-html-form'); // #jspsych-suevey-html-formのidを持つHTML要素を取得
+        const button = document.querySelector('#jspsych-survey-html-form-next'); // #~のidを持つボタンを取得
+        const genderInputs = form.querySelectorAll('input[name="gender"]'); //form内のname属性がgenderのinput要素を全て取得している
+        const ageInput = form.querySelector("#age-input"); // form内のidがage-inputのinput要素を取得
 
-        if (!button || !ageSelect || genderInputs.length === 0) return;
+        if (!button || !ageInput || genderInputs.length === 0) return;
 
         // 最初は押せない
         button.disabled = true;
 
         // 入力チェック関数
         const update = () => {
-          const genderChecked = Array.from(genderInputs).some(r => r.checked);
-          const ageValid = ageSelect.value !== ""; // 「選択してください」は空値なので無効
+          const genderChecked = Array.from(genderInputs).some(r => r.checked); // 性別ボタンにチェックが入ってるかのブール
+          const ageValue = ageInput.value.trim(); // 入力値の取り出し
+          const ageValid = ageValue !== "" && !isNaN(ageValue) && ageValue >= 0 && ageValue <= 120; // 空値と0-120歳以外の範囲は無効
           button.disabled = !(genderChecked && ageValid);
         };
 
         // 変更時に監視
-        genderInputs.forEach(r => r.addEventListener('change', update));
-        ageSelect.addEventListener('change', update);
+        genderInputs.forEach(r => r.addEventListener('change', update)); // 選択入力変更時にアップデートを実施
+        ageInput.addEventListener('input', update); // 年齢入力変更時にアップデート関数実施
 
         // 初期チェック（復帰時やオートフィル対策）
         update();

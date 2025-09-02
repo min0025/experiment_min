@@ -1,1 +1,2 @@
 # SDmethod_chara
+JavaScript, HTMLによるオンライン実験を前提としたSD法のフォーマットテンプレを作りたいと思っています。
