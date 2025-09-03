@@ -144,7 +144,7 @@ const trials_bio = shuffled_stimuli.map(stim => ({
       },
       {
         prompt: `<b style="font-size: 19px">Q2. 表示された単語から当てはまる「人物像」を<U>全て選んでください</U><br>(
-        1問目の選択以外で当てはまらない場合は、1問目と同じものだけ選んでください）</b>`,
+        1問目の選択以外で当てはまらない場合は、1問目と同じものだけで結構です）</b>`,
         name: 'Characteristics2', 
         options: likert_bio,
         required: true,
