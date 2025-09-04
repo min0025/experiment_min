@@ -216,7 +216,7 @@ const intermission = {
 // 性別と年齢入力欄
 const demographics = {
     type: jsPsychSurveyHtmlForm,
-    preamble: "<h1>お疲れ様でした</h1><p style='font-size: 20px'>最後にご自身の以下項目にご回答をお願いします</p>",
+    preamble: "<h1>お疲れ様でした</h1><p style='font-size: 20px'>ご自身について以下項目にご回答をお願いします</p>",
     html: `
       <p>
         性別:
@@ -322,7 +322,7 @@ const thanks = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: 
       '<h1>ご協力ありがとうございました</h1><br>' +
-      '<p style="font-size: 20px">タブを閉じて終了し、Google Formへの回答をお願いします</p>'
+      '<p style="font-size: 20px">タブを閉じて終了し、謝金取引のためGoogle Formへの回答をお願いします</p>'
 };
 
 jsPsych.run([consent_form, gap, intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, gap, demographics, check_id, save_data, thanks]);
