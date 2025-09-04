@@ -3,11 +3,12 @@
 // ------------------------------------------------------------------------
 // 実験固有で設定するのはこの2個所
 const expname = "characteristic";
-// const datapipe_experiment_id = "nX0ylBPTMR8A"; // こっちは予備実験用
-const datapipe_experiment_id = "nAh0fw7bKkDO"; // こっちは本実験用
+const datapipe_experiment_id = "nX0ylBPTMR8A"; // こっちは予備実験用
+// const datapipe_experiment_id = "nAh0fw7bKkDO"; // こっちは本実験用
 
 var filename; // OSFのファイル名
 var inputVal; // 入力ボックスの要素を取得
+var participant_ID = Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000;;
 
 var jsPsych = initJsPsych({});
 
@@ -64,6 +65,24 @@ const consent_form = {
   button_label: ['次に進む']
 };
 
+/*
+// 五桁のランダムな数字列を表示する
+const random_number = {
+  type: jsPsychSurveyMultiSelect,
+  questions: [
+    {
+      prompt: "<p style='font-size: 20px font-weight: bold;'>メモができましたら、チェックして「次に進む」ボタンを押してください</p>",
+      options: ["<b>メモしました</b>"],
+      required: true
+    }
+  ],
+  preamble: '<h1>実験に進む前に以下の番号をメモしてください</h1>' +
+            '<p style="font-size: 20px">（実験終了後に使用しますので、忘れないようにメモして保管してください）</p><br>' +
+            `<p style="font-size: 26px">${participant_ID}</p><br>`,
+  button_label: ['次に進む']
+}
+  */
+
 // 実験前置きのイントロ
 const intro = {
     type: jsPsychHtmlButtonResponse,
@@ -76,8 +95,8 @@ const intro = {
     choices: ['開始する']
 };
 
-const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
-// const stimuli = ["おれ", "わたし"]
+// const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
+const stimuli = ["おれ", "わたし"]
 // 刺激をランダムに並べ替える
 const shuffled_stimuli = jsPsych.randomization.shuffle(stimuli);
 
@@ -144,7 +163,7 @@ const trials_bio = shuffled_stimuli.map(stim => ({
       },
       {
         prompt: `<b style="font-size: 19px">Q2. 表示された単語から当てはまる「人物像」を<U>全て選んでください</U><br>(
-        1問目の選択以外で当てはまらない場合は、1問目と同じものだけで結構です）</b>`,
+        1問目で選んだものも含めて）</b>`,
         name: 'Characteristics2', 
         options: likert_bio,
         required: true,
@@ -207,7 +226,7 @@ const demographics = {
         <label><input name="gender" type="radio" value="noans"> 答えたくない</label>
       </p>
       <p>
-        年齢: 
+        本日時点の年齢（例：23）: 
         <input name="age" id="age-input" type="number" min="0" max="120" required>
       </p></br>
     `,
@@ -242,6 +261,53 @@ const demographics = {
     }
 };
 
+// ID確認用の画面
+const check_id = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: "<h1>最後に</h1><br>" + 
+            "<p style='font-size: 20px'>表示された以下の5桁の番号を<B><U>メモして</U></B>、入力欄に同じように記入してください</p>" +
+            "<p style='font-size: 20px'>（番号は謝礼取引に必要なので、<B><U>必ずメモして紛失しないように</B></U>注意してください）</p><br>" + 
+            `<p style='font-size: 26px'>${participant_ID}</p><br>`,
+  html: 
+    `<p>
+      番号： <input name="entered_id" id="entered-id" type="number" required>
+    </p> 
+    <p style="color:red; display:none;" id="id-error">
+      番号が一致しません、もう一度お確かめください
+    </p>
+    `,
+  button_label: "確認",
+  on_load: () => {
+    setTimeout(() => {
+      const form = document.querySelector('#jspsych-survey-html-form');
+      const button = document.querySelector('#jspsych-survey-html-form-next');
+      const input = document.querySelector('#entered-id');
+      const errorMsg = document.querySelector('#id-error');
+
+      if (!form || !button || !input) return;
+
+      // 最初は押せないボタン
+      button.disabled = true;
+
+      // 入力値が数字かどうかのチェック
+      input.addEventListener('input', () => {
+        button.disabled = input.value.trim() === "";
+      });
+
+      // ボタンを押したときに確認
+      button.addEventListener('click', (e) => {
+        const entered = input.value.trim();
+        if(entered !== String(participant_ID)) {
+          e.preventDefault(); // data_saveに進むのを止める
+          errorMsg.style.display = "block";
+        } else {
+          errorMsg.style.display = "none";
+        }
+      });
+    }, 0);
+  }
+}
+
 // DataPipe保存設定
 const save_data = {
   type: jsPsychPipe,
@@ -254,9 +320,9 @@ const save_data = {
 // 実験終了の画面
 const thanks = {
     type: jsPsychHtmlKeyboardResponse,
-    stimulus: `
-      <h1>ご協力ありがとうございました</h1>
-      <p style="font-size: 20px">タブを閉じて終了してください</p>`
+    stimulus: 
+      '<h1>ご協力ありがとうございました</h1><br>' +
+      '<p style="font-size: 20px">タブを閉じて終了し、Google Formへの回答をお願いします</p>'
 };
 
-jsPsych.run([consent_form, gap, intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, gap, demographics, save_data, thanks]);
+jsPsych.run([consent_form, gap, intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, gap, demographics, check_id, save_data, thanks]);
