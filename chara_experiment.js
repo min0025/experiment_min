@@ -3,8 +3,8 @@
 // ------------------------------------------------------------------------
 // 実験固有で設定するのはこの2個所
 const expname = "characteristic";
-const datapipe_experiment_id = "nX0ylBPTMR8A"; // こっちは予備実験用
-// const datapipe_experiment_id = "nAh0fw7bKkDO"; // こっちは本実験用
+// const datapipe_experiment_id = "nX0ylBPTMR8A"; // こっちは予備実験用
+const datapipe_experiment_id = "nAh0fw7bKkDO"; // こっちは本実験用
 
 var filename; // OSFのファイル名
 var inputVal; // 入力ボックスの要素を取得
