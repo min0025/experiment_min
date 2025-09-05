@@ -95,8 +95,8 @@ const intro = {
     choices: ['開始する']
 };
 
-// const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
-const stimuli = ["おれ", "わたし"]
+const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
+// const stimuli = ["おれ", "わたし"]
 // 刺激をランダムに並べ替える
 const shuffled_stimuli = jsPsych.randomization.shuffle(stimuli);
 
