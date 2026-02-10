@@ -3,8 +3,8 @@
 // ------------------------------------------------------------------------
 // 実験固有で設定するのはこの2個所
 const expname = "characteristic";
-// const datapipe_experiment_id = "nX0ylBPTMR8A"; // こっちは予備実験用
-const datapipe_experiment_id = "nAh0fw7bKkDO"; // こっちは本実験用
+const datapipe_experiment_id = "nX0ylBPTMR8A"; // こっちは予備実験用
+// const datapipe_experiment_id = "nAh0fw7bKkDO"; // こっちは本実験用
 
 var filename; // OSFのファイル名
 var inputVal; // 入力ボックスの要素を取得
@@ -49,7 +49,7 @@ const consent_form = {
   preamble: '<header class="header">実験内容の説明と研究へのご協力のお願い</header>' +
       '<div class="consent">' +
       '<p class="title">1. 実験の目的および内容</p>' +
-      '<p class="contents">本実験は、一人称および二人称の単語に対して、実験参加者がどんな印象を持っているのかについて調べることを目的としています。また、その単語から実験参加者がどんな人物像を想起するのかを調べることも目的としています。</p>' +
+      '<p class="contents">本実験は、文章の文末表現および感動詞の単語に対して、実験参加者がどんな印象を持っているのかについて調べることを目的としています。また、その単語から実験参加者がどんな人物像を想起するのかを調べることも目的としています。</p>' +
       '<p class="title">2. 実験の方法</p>' +
       '<p class="contents">本実験はwebブラウザ上で行います。画面上に提示される単語に対して質問に回答してもらいます。前半セクションと後半セクションに別れており、実験の所要時間は20分ほどです。質問には、あまり深く考えず感じたままに回答してください。</p>' + 
       '<p class="title">3. 実験結果データの扱いについて</p>' +
@@ -88,15 +88,26 @@ const intro = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <h1>前半セクション</h1><br>
-      <p style="font-size: 20px">ここでは、一人称および二人称の単語について各項目に回答してもらいます</p>
+      <p style="font-size: 20px">ここでは、文章の文末表現および感動詞に用いられる単語について各項目に回答してもらいます</p>
+      <p style="font-size: 20px">「〜」が付いて提示される語は、<b>文末につく言い方</b>を表しています</p>
+      <p style="font-size: 20px">刺激は「〜＋単語」（文末表現）か単独（感動詞）で提示されます</p>
+      <p style="font-size: 20px">評価の際、前者ではその語を文末表現として用いた言い方を想像してください</p>
+      <p style="font-size: 20px"><U><b>例：「〜ぜ」の場合 → 「食べるぜ / 食べるんだぜ」</b></U></p>
+      <p style="font-size: 20px">上記は一例であり、他の刺激についても同様に自然な文末表現に補完して捉えてください
       <p style="font-size: 20px">各項目の形容語に対して自分が感じる「印象の度合い」を評価してください</p>
       <p style="font-size: 20px">単語はページの先頭に表示されます</p>
     `,
     choices: ['開始する']
 };
 
-const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
-// const stimuli = ["おれ", "わたし"]
+// const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
+const stimuli = 
+["〜さ", "〜ぜ", "〜ぞ", "〜て", "〜ね", "〜の", 
+  "〜よ", "〜わ", "〜のう", "〜かしら", "〜こと",
+   "〜やがる", "〜じゃ", "〜とる", "〜ぬ", "〜ん", "〜ませ",
+   "おお", "おのれ", "くそ", "あら", "ほほほ", "おほほ", "まあ",
+   "さよう", "さらば", "フォフォフォ", "あら"
+];
 // 刺激をランダムに並べ替える
 const shuffled_stimuli = jsPsych.randomization.shuffle(stimuli);
 
@@ -162,7 +173,8 @@ const trials_bio = shuffled_stimuli.map(stim => ({
         horizontal: true
       },
       {
-        prompt: `<b style="font-size: 19px">Q2. 表示された単語から当てはまる「人物像」を<U>全て選んでください</U><br>（1問目で回答した選択肢しか当てはまらない場合は、1問目と同じように回答してください）</b>`,
+        prompt: `<b style="font-size: 19px">Q2. 表示された単語から当てはまる「人物像」を<U><b>1問目の回答も含めて</b>全て選んでください</U><br>(
+        1問目で回答した選択肢しか当てはまらない場合は、1問目と同じように回答してください）</b>`,
         name: 'Characteristics2', 
         options: likert_bio,
         required: true,
@@ -207,7 +219,7 @@ const intermission = {
     type: jsPsychHtmlButtonResponse,
     stimulus: `
       <h1>つづいて、後半のセクションです</h1><br>
-      <p style="font-size: 20px">後半セクションでは、単語から連想する「人物像」を回答してください</p>
+      <p style="font-size: 20px">後半セクションでは、先ほどの単語から連想する「人物像」を回答してください</p>
       <p style="font-size: 20px">単語はページの先頭に表示されます</p>`,
     choices: ["進む"]
 };
@@ -215,7 +227,7 @@ const intermission = {
 // 性別と年齢入力欄
 const demographics = {
     type: jsPsychSurveyHtmlForm,
-    preamble: "<h1>お疲れ様でした</h1><p style='font-size: 20px'>ご自身について以下項目にご回答をお願いします</p>",
+    preamble: "<h1>お疲れ様でした</h1><p style='font-size: 20px'>ご自身の以下項目にご回答をお願いします</p>",
     html: `
       <p>
         性別:
@@ -321,7 +333,7 @@ const thanks = {
     type: jsPsychHtmlKeyboardResponse,
     stimulus: 
       '<h1>ご協力ありがとうございました</h1><br>' +
-      '<p style="font-size: 20px">タブを閉じて終了し、謝金取引のためGoogle Formへの回答をお願いします</p>'
+      '<p style="font-size: 20px">タブを閉じて終了し、Google Formへの回答をお願いします</p>'
 };
 
 jsPsych.run([consent_form, gap, intro, gap, ...trials_7, gap, intermission, gap, ...trials_bio, gap, demographics, check_id, save_data, thanks]);
