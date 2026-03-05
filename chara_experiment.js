@@ -107,7 +107,7 @@ const stimuli =
   "〜やがる", "〜じゃ", "〜とる", "〜ぬ", "〜ん", "〜ませ",
   "おお", "おのれ", "くそ", "あら", "ほほほ", "おほほ", "まあ",
   "さよう", "さらば", "フォフォフォ", "あら"
-];*/
+];
 // const stimuli = ["〜さ", "〜ぜ"];
 // 刺激をランダムに並べ替える
 const shuffled_stimuli = jsPsych.randomization.shuffle(stimuli);
