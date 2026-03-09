@@ -3,7 +3,7 @@
 // ------------------------------------------------------------------------
 // 実験固有で設定するのはこの2個所
 const expname = "characteristic";
-const datapipe_experiment_id = "miZfAQkvRtZz"; // こっちは予備実験用
+const datapipe_experiment_id = "nX0ylBPTMR8A"; // こっちは予備実験用
 // const datapipe_experiment_id = "nAh0fw7bKkDO"; // こっちは本実験用
 
 var filename; // OSFのファイル名
@@ -90,25 +90,26 @@ const intro = {
       <h1>前半セクション</h1><br>
       <p style="font-size: 20px">ここでは、文章の文末表現および感動詞に用いられる単語について各項目に回答してもらいます</p>
       <p style="font-size: 20px">「〜」が付いて提示される語は、<b>文末につく言い方</b>を表しています</p>
-      <p style="font-size: 20px">刺激は「〜＋単語」（文末表現）か単独（感動詞）で提示されます</p>
-      <p style="font-size: 20px">評価の際、前者ではその語を文末表現として用いた言い方を想像してください</p>
-      <p style="font-size: 20px"><U><b>例：「〜ぜ」の場合 → 「食べるぜ / 食べるんだぜ」</b></U></p>
-      <p style="font-size: 20px">上記は一例であり、他の刺激についても同様に自然な文末表現に補完して捉えてください
+      <p style="font-size: 20px">刺激は<b>「〜＋単語」（助詞・助動詞）</b>か<b>単独（感動詞）</b>で提示されます</p>
+      <p style="font-size: 20px">評価の際、前者の場合はその単語を文末表現として用いた言い方を想像してください</p>
+      <p style="font-size: 20px">下記は一例であり、他の場合についても同様に自然な文末表現に補完して捉えてください</p>
+      <p style="font-size: 20px"><U><b>例：「〜ぜ」の場合 → 「食べるぜ / 食べるんだぜ etc...」</b></U></p>
+      <p style="font-size: 20px">また、後者の単独提示における刺激は以下の通りです</p>
+      <table class="example"><tr><th>おお</th><th>おのれ</th><th>あら</th><th>ほほほ</th><th>おほほ</th><th>まあ</th><th>あら</th></tr></table>
       <p style="font-size: 20px">各項目の形容語に対して自分が感じる「印象の度合い」を評価してください</p>
       <p style="font-size: 20px">単語はページの先頭に表示されます</p>
     `,
     choices: ['開始する']
 };
 
-// const stimuli = ["おれ", "ぼく"];
+// const stimuli = ["おれ", "ぼく", "おいら", "わし", "あんた", "きさま", "あたい", "あたし", "わらわ", "おぬし", "なんじ", "わがはい", "しょくん", "わたくし"];
 const stimuli = 
-["〜さ", "〜ぜ", "〜ぞ", "〜て", "〜ね", "〜の", 
+[
+  "〜さ", "〜ぜ", "〜ぞ", "〜ね", "〜の", 
   "〜よ", "〜わ", "〜のう", "〜かしら", "〜こと",
-  "〜やがる", "〜じゃ", "〜とる", "〜ぬ", "〜ん", "〜ませ",
-  "おお", "おのれ", "くそ", "あら", "ほほほ", "おほほ", "まあ",
-  "さよう", "さらば", "フォフォフォ", "あら"
+   "〜やがる", "〜じゃ", "〜とる", "〜ん", "〜ませ",
+   "おお", "おのれ", "あら", "ほほほ", "おほほ", "まあ", "あら"
 ];
-// const stimuli = ["〜さ", "〜ぜ"];
 // 刺激をランダムに並べ替える
 const shuffled_stimuli = jsPsych.randomization.shuffle(stimuli);
 
